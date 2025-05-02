@@ -1,0 +1,434 @@
+---
+title: "Thesis Preliminary Analysis"
+author: "CRUSTOM JAKE D. RONCAL"
+format: 
+  html:
+    self-contained: true
+    mainfont: arial
+    fontsize: 1em
+    linestretch: 1.5
+    toc: true
+    toc-location: left
+    number-sections: true
+    code-fold: true
+    theme:
+      light: cosmo
+      dark: darkly
+execute:
+  message: false
+  warning: false
+  fig-align: center
+editor: visual
+---
+
+# Panel Data Analysis on the Effects of Economic Growth and Policy on Deforestation Rates in Selected ASEAN Member States
+
+## Brief Rationale
+
+Forests are crucial for maintaining ecological harmony and rich biodiversity. They supply a myriad of essential benefits, including the production of oxygen, storage of carbon, and a place to live for countless variety of species, which accounts for roughly 80% of the world’s terrestrial biodiversity. Moreover, forests play an important role in the global carbon cycle as they act as filters of natural waters, climate reduction by absorption of carbon dioxide, and soil conservation (Food and Agriculture Organization, 2010). From an economic perspective, forests also have a significant role to play by providing natural endowments to the lives of millions. A report in 2010 revealed that approximately 1.6 billion of the world’s population relies heavily on forests for their source of living, survival, and holistic welfare (FAO, 2010). Forests are one of the most precious resources that Asia possesses, as they consist of 17% of the world’s forest cover. However, due to the abundance of resources in the region, Asia is currently under an alarming threat of deforestation, driven specifically by illegal logging, expansion of used agricultural land, and infrastructure development.
+
+## Objectives
+
+This study will empirically analyze how economic and institutional determinants will affect the rate of deforestation across selected ASEAN member states by incorporating the Environmental Kuznets Curve, primarily focusing on the relationship between economic growth and deforestation using panel data regression. Specifically,
+
+1.  to describe the trends of the rate of deforestation and GDP per capita across selected ASEAN member states from 2008-2020
+
+2.  to assess the significance and magnitude of economic growth and policy factors influencing deforestation rates in selected ASEAN members states; and
+
+3.  to add sustainable policy insights regarding the effects of extensive economic activities and quality of institutional policies on the state of forest among ASEAN countries
+
+## Data Analysis
+
+**Dependent Variable:** Rate of Deforestation
+
+**Independent Variable:** GDP per capita, Foreign Direct Investment, Wood Exports, Share of Renewable Energy, and Control of Corruption
+
+### Descriptive Statistics
+
+```{r}
+#Read the dataset
+thesis <- read.csv("data.csv")
+
+# omit missing values
+thesis <- na.omit(thesis)
+
+# Load necessary libraries
+library(stargazer)
+
+#Drop Variables
+thesis <- thesis[, !(names(thesis) %in% c("GDPpc2","PopD","Trade", "AgriLU", "RegQ", "RLaw"))]
+
+# Create a clean Descriptive Statistics Table
+stargazer(
+  thesis[, !(names(thesis) %in% c("Country", "Year", "GDPpc2"))],  # Remove unwanted variables
+  type = "text",        
+  title = "Descriptive Statistics of Key Variables", 
+  digits = 3,           # Number of decimals
+  summary.stat = c("mean", "sd", "min", "median", "max"),  # Statistics you want
+  out.header = FALSE,   # No extra header
+  initial.zero = TRUE   # Show leading 0 before decimal
+)
+```
+
+Table \_ shows the descriptives statistics of the variables used in the study, which utilized five ASEAN Member States—Indonesia, Malaysia, Philippines, Thailand, and Vietnam—spanning the from the period 2008-2020. It shows the number of observation (N), mean, standard deviation (St. Dev), minimum values, and maximum values from each variables examined the study. Moreover, the variables used in the study were rate of deforestation (RDef), GDP per capita (GDPpc), Share of Renewable Energy (RENEW), Wood Exports (WoodEx), Foreign Direct Investment (FDI), and Control of Corruption (CCor).
+
+**Rate of Deforestation.** The rate of deforestation (RDef) which is the main dependent variable of the study, measured as the average annual change, has a mean value of -0.119 and standard deviation of 0.685. The negative mean suggests, that on average, the country covered in this study are experiencing moderate reduction in deforestation over period of the study, which may also suggest a slow transition to reforestation. However, the substantial difference between the minimum value of -2.246 and maximum value of 1.388 implies a significant variation across ASEAN countries over year. Some countries may have strengthened their national efforts to restore the forest areas (negative values) whereas other countries are may still extracting natural resources to meet their national needs.
+
+**GDP per Capita.** Gross Domestic Product per Capita (GDPpc), measured in current USD, presents a mean value of 12,712.940 with a standard deviation of 6,748.938. This shows how dispersed the income per capita is across selected ASEAN member states, which may also reflect the variation in the level of economic development. The minimum GDP per capita is listed at 4,916.131, while maximum value peaked at 29,750.270. The noticeable range in per capita income may suggest that countries included the study are in both lower-middle income (Vietnam, Philippines,) and upper-middle income economies (Malaysia, Thailand). This spread in income may have a significant effect in regulating environmental effects.
+
+**Share of Renewable Energy Consumption.** Renewable energy consumption (RENEW), expressed as the percentage of total final energy consumption, presented an average of 23.669% across observations, with a relatively high standard deviation of 11.374%. The minimum value was 2.000% while maximum value settled at 41.100%. This highly dispersed values from the observation suggest that while there are ASEAN member states that already relied heavily on renewable energy, there are still countries that settled on consuming non-renewable energy.  Share of renewable energy consumption patterns could have significant impact on deforestation rates since transitioning to a cleaner source of energy consumption may mitigate forest and natural resources degradation caused by intensive traditional biomass utilization.
+
+**Wood Exports.** Wood exports (WoodEx), which represents the share of wood products in merchandise exports, tallied an average on 1.998% across sample on a standard deviation of 0.313. The minimum value is recorded at 1.420% whereas maximum value is set at 2.530%, suggesting that while it is an important sector, it recorded a relatively lower variation and fluctuation across time. However, it is interesting to identify how exporting wood products, especially in countries reliant on forest resources like developing countries, impact the degradation of natural resources
+
+**Foreign Direct Investment.** Foreign direct investment (FDI) inflows, expressed as a percentage of GDP, shows a mean value of 5.076% and a standard deviation of 4.681. FDI in selected ASEAN states reached the highest value at 0.21675% and lowest at 0.724%. The widespread in FDI inflows may signify variation in economic openness among ASEAN states, potentially affecting the regulation of land-use practices, like extraction of natural resources either through direct investment in resources-depleting industries or other investment options related to environmental utilization.
+
+**Control of Corruption.** Control of Corruption (CCor), showed a mean value of -0.399 corresponding to a standard deviation of 0.306, ranging from a minimum value of -0.890 to a maximum value of 0.397.  This variable is measured on an idex where higher values indicate better of control of corruption practices while lower values show poor regulation of corruption practices. The negative average may be inferred as countries involved in the study are experiencing difficulty containing corruption. Corruption, when not controlled effectively, may have significant effect on the degradation of forest due to poor land administration, lack of policies on logging practices, and enforcement of sustainable environmental practices.
+
+### Converting the Data in Panel Dataset
+
+```{r}
+#converting the data into a panel dataset
+
+library(plm)
+library(stargazer)
+
+paneldata <- pdata.frame(thesis, index = c("Country", "Year")) 
+pdim(paneldata)
+
+stargazer(paneldata, type = "text", title = "Descriptive Statistics of Panel Data", digits = 3) 
+```
+
+### Exploratory Descriptive Analysis
+
+```{r}
+#exploratory descriptive analysis
+library(dplyr)
+library(ggplot2)
+
+#logging GDPpc and RDef
+log <- thesis %>% mutate(log_RDef = RDef, log_GDPpc = log(GDPpc))
+```
+
+#### A. Trend Analysis of the Variables from 2008-2020
+
+```{r}
+#Rate of Deforestation
+ggplot(log, aes(x = Year, y = log_RDef, color = Country)) +
+  geom_line() +
+  facet_wrap(~ Country, scales = "free_y") +
+  scale_x_continuous(breaks = c(2010, 2015, 2020)) +
+  theme_minimal() +
+  ggtitle("Rate of Deforestation Over Time by Country") +
+  xlab("Year") +
+  ylab("Rate of Deforestation")
+```
+
+```{r}
+#GDP per capita
+ggplot(log, aes(x = Year, y = log_GDPpc, color = Country)) +
+  geom_line() +
+  facet_wrap(~ Country, scales = "free_y") +
+  scale_x_continuous(breaks = c(2010, 2015, 2020)) +
+  theme_minimal() +
+  ggtitle("GDP per capita over time by Country") +
+  xlab("Year") +
+  ylab("GDP per capita")
+```
+
+```{r}
+#Share of Renewable Energy
+ggplot(log, aes(x = Year, y = RENEW, color = Country)) +
+  geom_line() +
+  facet_wrap(~ Country, scales = "free_y") +
+  scale_x_continuous(breaks = c(2010, 2015, 2020)) +
+  theme_minimal() +
+  ggtitle("Share of Renewable Energy Over Time by Country") +
+  xlab("Year") +
+  ylab("Share of Renewable Energy")
+```
+
+```{r}
+#Foreign Direct Investment
+ggplot(log, aes(x = Year, y = FDI, color = Country)) +
+  geom_line() +
+  facet_wrap(~ Country, scales = "free_y") +
+  scale_x_continuous(breaks = c(2010, 2015, 2020)) +
+  theme_minimal() +
+  ggtitle("Foreign Direct Investment Over Time by Country") +
+  xlab("Year") +
+  ylab("FDI")
+```
+
+```{r}
+#Wood Exports
+ggplot(log, aes(x = Year, y = WoodEx, color = Country)) +
+geom_line() +
+  facet_wrap(~ Country, scales = "free_y") +
+  scale_x_continuous(breaks = c(2010, 2015, 2020)) +
+  theme_minimal() +
+  ggtitle("Wood Exports Over Time by Country") +
+  xlab("Year") +
+  ylab("Wood Exports")
+```
+
+```{r}
+#Control of Corruption
+ggplot(log, aes(x = Year, y = CCor, color = Country)) +
+  geom_line() +
+  facet_wrap(~ Country, scales = "free_y") +
+  scale_x_continuous(breaks = c(2010, 2015, 2020)) +
+  theme_minimal() +
+  ggtitle("Control of Corruption Over Time by Country") +
+  xlab("Year") +
+  ylab("Control of Corruption")
+```
+
+#### B. DV-IV Visual Presentation
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(scales)
+```
+
+```{r}
+#RDef-GDPpc
+ggplot(log, aes(x = log_GDPpc, y = log_RDef)) +
+  geom_line(aes(group = Country), color = "gray60", linewidth = 0.8) +  # Connect points
+  geom_point(color = "gray30", size = 2) +
+  facet_wrap(~ Country, scales = "free") +
+  labs(
+    title = "Relationship between Deforestation Rates and GDP per Capita",
+    subtitle = "Per Country (ASEAN Panel Data)",
+    x = "GDP per Capita",
+    y = "Deforestation Rate"
+  ) +
+  theme_classic(base_size = 14) +
+  theme(
+    strip.background = element_rect(fill = "grey90", color = "grey50"),
+    strip.text = element_text(size = 10, face = "bold"),
+    plot.title = element_text(size = 12, face = "bold"),
+    plot.subtitle = element_text(size = 11, color = "grey40"),
+    axis.text = element_text(size = 12),
+    axis.title = element_text(size = 13),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5),
+    panel.spacing = unit(1, "lines")
+  )
+```
+
+```{r}
+#RDef-FDI
+ggplot(log, aes(x = FDI, y = log_RDef)) +
+  geom_line(aes(group = Country), color = "gray60", linewidth = 0.8) +  # Connect points
+  geom_point(color = "gray30", size = 2) +
+  facet_wrap(~ Country, scales = "free") +
+  labs(
+    title = "Relationship between Deforestation Rates and FDI (% of GDP)",
+    subtitle = "Per Country (ASEAN Panel Data)",
+    x = "Foreign Direct Investment (% of GDP)",
+    y = "Deforestation Rates"
+  ) +
+  theme_classic(base_size = 14) +
+  theme(
+    strip.background = element_rect(fill = "grey90", color = "grey50"),
+    strip.text = element_text(size = 10, face = "bold"),
+    plot.title = element_text(size = 12, face = "bold"),
+    plot.subtitle = element_text(size = 11, color = "grey40"),
+    axis.text = element_text(size = 12),
+    axis.title = element_text(size = 13),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5),
+    panel.spacing = unit(1, "lines")
+  )
+```
+
+```{r}
+#RDef-RENEW
+ggplot(log, aes(x = RENEW, y = log_RDef)) +
+  geom_line(aes(group = Country), color = "gray60", linewidth = 0.8) +  # Connect points
+  geom_point(color = "gray30", size = 2) +
+  facet_wrap(~ Country, scales = "free") +
+  labs(
+    title = "Relationship between Deforestation Rates and Share of Renewable Energy",
+    subtitle = "Per Country (ASEAN Panel Data)",
+    x = "Share of Renewable Energy Consumption",
+    y = "Deforestation Rates"
+  ) +
+  theme_classic(base_size = 14) +
+  theme(
+    strip.background = element_rect(fill = "grey90", color = "grey50"),
+    strip.text = element_text(size = 10, face = "bold"),
+    plot.title = element_text(size = 12, face = "bold"),
+    plot.subtitle = element_text(size = 11, color = "grey40"),
+    axis.text = element_text(size = 12),
+    axis.title = element_text(size = 13),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5),
+    panel.spacing = unit(1, "lines"))
+```
+
+```{r}
+#RDEf-WoodEx
+ggplot(log, aes(x = WoodEx, y = log_RDef)) +
+  geom_line(aes(group = Country), color = "gray60", linewidth = 0.8) +  # Connect points
+  geom_point(color = "gray30", size = 2) +
+  facet_wrap(~ Country, scales = "free") +
+  labs(
+    title = "Relationship between Deforestation Rates and Wood Exports",
+    subtitle = "Per Country (ASEAN Panel Data)",
+    x = "Wood Exports",
+    y = "Deforestation Rates"
+  ) +
+  theme_classic(base_size = 14) +
+  theme(
+    strip.background = element_rect(fill = "grey90", color = "grey50"),
+    strip.text = element_text(size = 10, face = "bold"),
+    plot.title = element_text(size = 12, face = "bold"),
+    plot.subtitle = element_text(size = 11, color = "grey40"),
+    axis.text = element_text(size = 12),
+    axis.title = element_text(size = 13),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5),
+    panel.spacing = unit(1, "lines")
+  )
+```
+
+```{r}
+#RDef-CCor
+ggplot(log, aes(x = CCor, y = log_RDef)) +
+  geom_line(aes(group = Country), color = "gray60", linewidth = 0.8) +  # Connect points
+  geom_point(color = "gray30", size = 2) +
+  facet_wrap(~ Country, scales = "free") +
+  labs(
+    title = "Relationship between Deforestation Rates and Control of Corruption",
+    subtitle = "Per Country (ASEAN Panel Data)",
+    x = "Control of Corruption",
+    y = "Deforestation Rates"
+  ) +
+  theme_classic(base_size = 14) +
+  theme(
+    strip.background = element_rect(fill = "grey90", color = "grey50"),
+    strip.text = element_text(size = 10, face = "bold"),
+    plot.title = element_text(size = 12, face = "bold"),
+    plot.subtitle = element_text(size = 11, color = "grey40"),
+    axis.text = element_text(size = 12),
+    axis.title = element_text(size = 13),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5),
+    panel.spacing = unit(1, "lines")
+  )
+```
+
+### Regression Analysis
+
+#### A. Pooled OLS
+
+```{r}
+#A. Pooled OLS
+Pooled <- plm(RDef ~ GDPpc + FDI + WoodEx + RENEW + CCor, data = paneldata, index = c("Country", "Year"), 
+                model = "pooling")
+summary(Pooled)
+```
+
+#### B. Random Effects (Wallace-Hussain Transformation)
+
+```{r}
+#B. Random Effects (Wallace-Hussain Transformation)
+Random <- plm(RDef ~ GDPpc + FDI + WoodEx + RENEW + CCor, data = paneldata, index = c("Country", "Year"), 
+              model = "random", random.method = "walhus")
+summary(Random)
+```
+
+#### C. Fixed Effects
+
+```{r}
+#C. Fixed Effects
+Fixed <- plm(RDef ~ GDPpc + FDI + CCor + WoodEx + RENEW , data = paneldata, index = c("Country", "Year"), 
+             model = "within") 
+summary(Fixed)
+```
+
+#### D. Regression Tables
+
+```{r}
+#Generate Well-Formatted Table with Proper Labels
+stargazer(Pooled, Random, Fixed, type = "text",
+          title = "Panel Regression Results",
+          column.labels = c("Pooled", "Random", "Fixed"),
+          digits = 3, align = TRUE)
+```
+
+#### E. Choosing the Best Model to Use
+
+```{r}
+# 1. Breusch-Pagan Lagrange Multiplier test (Testing: Pooled OLS vs. Random Effects)
+plmtest(Random, type = "bp")
+```
+
+Null Hypothesis (H₀): There are no panel (individual-specific) effects. Pooled OLS is appropriate.
+
+Alternative Hypothesis (H₁): There are significant panel effects. Random Effects model is preferred.
+
+```{r}
+# 2. Pooled vs Fixed Effects (Testing: Pooled OLS vs. Fixed Effects)
+pFtest(Fixed, Pooled)
+
+```
+
+Null Hypothesis (H₀):All individual effects are zero (no fixed effects needed). Pooled OLS is appropriate.
+
+Alternative Hypothesis (H₁): At least one individual effect is non-zero (Fixed Effects model is needed).
+
+```{r}
+# 3. Fixed vs Random Effects (Hausman Test)
+phtest(Fixed, Random)
+```
+
+Null Hypothesis (H₀):Random Effects estimator is consistent and efficient → RE is appropriate.
+
+Alternative Hypothesis (H₁):Random Effects estimator is inconsistent → prefer Fixed Effects.
+
+### Post Estimation Analysis
+
+```{r}
+library(lmtest)
+library(plm)
+library(car)
+```
+
+#### Variance Inflation Factor
+
+```{r}
+#A. Variance Inflation Factor
+vif(lm(RDef ~ GDPpc + RENEW + WoodEx + FDI + CCor, data = paneldata))
+```
+
+Purpose: Detect multicollinearity among the explanatory variables.
+
+Rule of Thumb: VIF \> 10: High multicollinearity (problematic)
+
+#### Breusch-Pagan Test for heteroscedasticity
+
+```{r}
+bptest(Random)
+```
+
+Purpose: Test if residuals have constant variance (homoskedasticity).
+
+Null Hypothesis (H₀): Homoskedasticity (constant variance of errors) Alternative Hypothesis (H₁): Heteroskedasticity (variance of errors is not constant)
+
+#### Breusch-Godfrey/Wooldridge test for serial correlation in panel models
+
+```{r}
+pbgtest(Random)
+```
+
+Purpose: Checks autocorrelation in the panel data errors. Null Hypothesis (H₀): No serial correlation in the idiosyncratic errors Alternative Hypothesis (H₁): Serial correlation exists
+
+#### Cross-sectional Dependence (Pesaran's CD test)
+
+```{r}
+pcdtest(Random, test = "cd")
+```
+
+Purpose: Check if errors across cross-sectional units (countries) are correlated.
+
+Null Hypothesis (H₀): No cross-sectional dependence (errors are independent across panels)
+
+Alternative Hypothesis (H₁): Presence of cross-sectional dependence
