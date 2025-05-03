@@ -47,7 +47,7 @@ This study will empirically analyze how economic and institutional determinants 
 
 -   GDP per Capita
 
--    Foreign Direct Investment
+-   Foreign Direct Investment
 
 -   Wood Exports
 
@@ -204,6 +204,8 @@ ggplot(log, aes(x = Year, y = CCor, color = Country)) +
   xlab("Year") +
   ylab("Control of Corruption")
 ```
+
+**Control of Corruption** *(3 best, -3 worst).*The control of corruption index shows that all nation records an index below 0 which indicate a poor or low control of corruption practices over time. Indonesia experienced a steady improvement from -0.9 value in 2010 to -0.3 in 2016 before declining in the succeeding years. This indicates a slow progress in containing corruption practices over time with setbacks in the recent years. Malaysia initially experienced a -0.1 index in 2010, continuously improving until 2015 with an 0.4 index but showed a sharp decline the following years at 0.0 in 2017 before increasing gradually again and a slight decrease at the end of 2020 at 0.2 This suggests that anti-corruption efforts in Malaysia has showed initial improvements in containing corruption but has become inconsistent in the later years. Philippines’ index rose sharply in 2014 to -0.4 from a -0.8 index in 2010, but since then showed a declining trend in the following years before settling at -0.5 in 2020. The country may have experienced early anti-corruption practices but has become shaky after 2015. Thailand displayed declining yet fluctuating trend over time with improvements in years 2010 at -0.35 and -0.37 at 2014 before declining heavily at -0.55 in 2015, improved slightly at -0.45 in 2016 and ended at -0.50 in 2020. Similar to the Philippines, Thailand has also showed early anti-corruption efforts but not sustained in the remaining years. Finally, Vietnam has also exhibited a fluctuation over years with a gradual improvement from a -0.7 in 2009 to better -0.4 in 2015 declining again in 2016 and has since then showed an improving performance ending at -0.4 in 2020 which may indicate that the country is in a long-term effort in mitigating corruption practices.
 
 #### B. DV-IV Visual Presentation
 
