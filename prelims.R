@@ -1,5 +1,5 @@
 #Read the dataset
-thesis <- read.csv("data.csv")
+thesis <- read.csv("~/data.csv")
 
 # omit missing values
 thesis <- na.omit(thesis)

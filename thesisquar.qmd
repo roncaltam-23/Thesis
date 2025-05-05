@@ -1,5 +1,6 @@
 ---
-title: "Thesis Preliminary Analysis"
+title:  "Panel Data Analysis on the Effects of Economic Growth and Policy on Deforestation Rates in Selected ASEAN Member States"
+subtitle: "Thesis Preliminary Analysis"
 author: "CRUSTOM JAKE D. RONCAL"
 format: 
   html:
@@ -21,8 +22,6 @@ execute:
 editor: visual
 ---
 
-# Panel Data Analysis on the Effects of Economic Growth and Policy on Deforestation Rates in Selected ASEAN Member States
-
 ## Brief Rationale
 
 Forests are crucial for maintaining ecological harmony and rich biodiversity. They supply a myriad of essential benefits, including the production of oxygen, storage of carbon, and a place to live for countless variety of species, which accounts for roughly 80% of the world’s terrestrial biodiversity. Moreover, forests play an important role in the global carbon cycle as they act as filters of natural waters, climate reduction by absorption of carbon dioxide, and soil conservation (Food and Agriculture Organization, 2010). From an economic perspective, forests also have a significant role to play by providing natural endowments to the lives of millions. A report in 2010 revealed that approximately 1.6 billion of the world’s population relies heavily on forests for their source of living, survival, and holistic welfare (FAO, 2010). Forests are one of the most precious resources that Asia possesses, as they consist of 17% of the world’s forest cover. However, due to the abundance of resources in the region, Asia is currently under an alarming threat of deforestation, driven specifically by illegal logging, expansion of used agricultural land, and infrastructure development.
@@ -35,7 +34,9 @@ This study will empirically analyze how economic and institutional determinants 
 
 2.  to assess the significance and magnitude of economic growth and policy factors influencing deforestation rates in selected ASEAN members states; and
 
-3.  to add sustainable policy insights regarding the effects of extensive economic activities and quality of institutional policies on the state of forest among ASEAN countries
+3.  to add sustainable policy insights regarding the effects of extensive economic activities and quality of institutional policies on the state of forest among ASEAN countries.
+
+## 
 
 ## Data Analysis
 
