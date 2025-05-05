@@ -2,7 +2,7 @@
 title: "Panel Data Analysis on the Effects of Economic Growth and Policy on Deforestation Rates in Selected ASEAN Member States"
 subtitle: "Thesis Preliminary Analysis"
 author: "CRUSTOM JAKE D. RONCAL 
-(Environmental and Development Economics)"
+(Environmental and Development Economics-4)"
 format: 
   html:
     self-contained: true
