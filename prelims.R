@@ -36,6 +36,7 @@ stargazer(paneldata, type = "text", title = "Descriptive Statistics of Panel Dat
 #Exploratory Descriptive Analysis
 library(dplyr)
 library(ggplot2)
+library(ggthemes)
 
 #logging GDPpc and RDef
 log <- thesis %>% mutate(log_RDef = RDef, log_GDPpc = log(GDPpc))
@@ -43,11 +44,16 @@ log <- thesis %>% mutate(log_RDef = RDef, log_GDPpc = log(GDPpc))
 #A. Variables' visual presentation over time per country
 
 #Rate of Deforestation
-ggplot(log, aes(x = Year, y = log_RDef, color = Country)) +
+ggplot(log, aes(x = Year, y = log_RDef)) +
+  geom_hline(yintercept = 0, lty = "dashed") + 
   geom_line() +
-  facet_wrap(~ Country, scales = "free_y") +
-  scale_x_continuous(breaks = c(2010, 2015, 2020)) +
-  theme_minimal() +
+  facet_wrap(~ Country, scales = "free_x") +
+  scale_x_continuous(breaks = seq(2008,2020,4)) +
+  theme_foundation() + 
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "none"
+  )
   ggtitle("Rate of Deforestation Over Time by Country") +
   xlab("Year") +
   ylab("Rate of Deforestation")

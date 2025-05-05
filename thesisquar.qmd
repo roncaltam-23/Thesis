@@ -1,7 +1,8 @@
 ---
-title:  "Panel Data Analysis on the Effects of Economic Growth and Policy on Deforestation Rates in Selected ASEAN Member States"
+title: "Panel Data Analysis on the Effects of Economic Growth and Policy on Deforestation Rates in Selected ASEAN Member States"
 subtitle: "Thesis Preliminary Analysis"
-author: "CRUSTOM JAKE D. RONCAL"
+author: "CRUSTOM JAKE D. RONCAL 
+(Environmental and Development Economics)"
 format: 
   html:
     self-contained: true
@@ -30,33 +31,9 @@ Forests are crucial for maintaining ecological harmony and rich biodiversity. Th
 
 This study will empirically analyze how economic and institutional determinants will affect the rate of deforestation across selected ASEAN member states by incorporating the Environmental Kuznets Curve, primarily focusing on the relationship between economic growth and deforestation using panel data regression. Specifically,
 
-1.  to describe the trends of the rate of deforestation and GDP per capita across selected ASEAN member states from 2008-2020
+### 1. to describe the trends of the rate of deforestation and GDP per capita across selected ASEAN member states from 2008-2020
 
-2.  to assess the significance and magnitude of economic growth and policy factors influencing deforestation rates in selected ASEAN members states; and
-
-3.  to add sustainable policy insights regarding the effects of extensive economic activities and quality of institutional policies on the state of forest among ASEAN countries.
-
-## 
-
-## Data Analysis
-
-**Dependent Variable:**
-
--   Rate of Deforestation
-
-**Independent Variable:**
-
--   GDP per Capita
-
--   Foreign Direct Investment
-
--   Wood Exports
-
--   Share of Renewable Energy ; and
-
--   Control of Corruption
-
-### Descriptive Statistics
+#### a. Descriptive Statistics
 
 ```{r}
 #Read the dataset
@@ -97,7 +74,7 @@ Table \_ shows the descriptives statistics of the variables used in the study, w
 
 **Control of Corruption.** Control of Corruption (CCor), showed a mean value of -0.399 corresponding to a standard deviation of 0.306, ranging from a minimum value of -0.890 to a maximum value of 0.397.  This variable is measured on an idex where higher values indicate better of control of corruption practices while lower values show poor regulation of corruption practices. The negative average may be inferred as countries involved in the study are experiencing difficulty containing corruption. Corruption, when not controlled effectively, may have significant effect on the degradation of forest due to poor land administration, lack of policies on logging practices, and enforcement of sustainable environmental practices.
 
-### Converting the Data in Panel Dataset
+#### b. Exploratory Descriptive Statistics
 
 ```{r}
 #converting the data into a panel dataset
@@ -111,8 +88,6 @@ pdim(paneldata)
 stargazer(paneldata, type = "text", title = "Descriptive Statistics of Panel Data", digits = 3) 
 ```
 
-### Exploratory Descriptive Analysis
-
 ```{r}
 #exploratory descriptive analysis
 library(dplyr)
@@ -122,7 +97,7 @@ library(ggplot2)
 log <- thesis %>% mutate(log_RDef = RDef, log_GDPpc = log(GDPpc))
 ```
 
-#### A. Trend Analysis of the Variables from 2008-2020
+##### A. Trend Analysis of the Variables from 2008-2020
 
 ```{r}
 #Rate of Deforestation
@@ -208,7 +183,7 @@ ggplot(log, aes(x = Year, y = CCor, color = Country)) +
 
 **Control of Corruption** *(3 best, -3 worst).*The control of corruption index shows that all nation records an index below 0 which indicate a poor or low control of corruption practices over time. Indonesia experienced a steady improvement from -0.9 value in 2010 to -0.3 in 2016 before declining in the succeeding years. This indicates a slow progress in containing corruption practices over time with setbacks in the recent years. Malaysia initially experienced a -0.1 index in 2010, continuously improving until 2015 with an 0.4 index but showed a sharp decline the following years at 0.0 in 2017 before increasing gradually again and a slight decrease at the end of 2020 at 0.2 This suggests that anti-corruption efforts in Malaysia has showed initial improvements in containing corruption but has become inconsistent in the later years. Philippines’ index rose sharply in 2014 to -0.4 from a -0.8 index in 2010, but since then showed a declining trend in the following years before settling at -0.5 in 2020. The country may have experienced early anti-corruption practices but has become shaky after 2015. Thailand displayed declining yet fluctuating trend over time with improvements in years 2010 at -0.35 and -0.37 at 2014 before declining heavily at -0.55 in 2015, improved slightly at -0.45 in 2016 and ended at -0.50 in 2020. Similar to the Philippines, Thailand has also showed early anti-corruption efforts but not sustained in the remaining years. Finally, Vietnam has also exhibited a fluctuation over years with a gradual improvement from a -0.7 in 2009 to better -0.4 in 2015 declining again in 2016 and has since then showed an improving performance ending at -0.4 in 2020 which may indicate that the country is in a long-term effort in mitigating corruption practices.
 
-#### B. DV-IV Visual Presentation
+##### B. DV-IV Visual Presentation
 
 ```{r}
 library(ggplot2)
@@ -340,9 +315,9 @@ ggplot(log, aes(x = CCor, y = log_RDef)) +
   )
 ```
 
-### Regression Analysis
+### 2. to assess the significance and magnitude of economic growth and policy factors influencing deforestation rates in selected ASEAN members states; and
 
-#### A. Pooled OLS
+#### Pooled OLS
 
 ```{r}
 #A. Pooled OLS
@@ -351,7 +326,7 @@ Pooled <- plm(RDef ~ GDPpc + FDI + WoodEx + RENEW + CCor, data = paneldata, inde
 summary(Pooled)
 ```
 
-#### B. Random Effects (Wallace-Hussain Transformation)
+#### Random Effects (Wallace-Hussain Transformation)
 
 ```{r}
 #B. Random Effects (Wallace-Hussain Transformation)
@@ -360,7 +335,7 @@ Random <- plm(RDef ~ GDPpc + FDI + WoodEx + RENEW + CCor, data = paneldata, inde
 summary(Random)
 ```
 
-#### C. Fixed Effects
+#### Fixed Effects
 
 ```{r}
 #C. Fixed Effects
@@ -369,7 +344,7 @@ Fixed <- plm(RDef ~ GDPpc + FDI + CCor + WoodEx + RENEW , data = paneldata, inde
 summary(Fixed)
 ```
 
-#### D. Regression Tables
+#### Regression Table
 
 ```{r}
 #Generate Well-Formatted Table with Proper Labels
@@ -379,7 +354,9 @@ stargazer(Pooled, Random, Fixed, type = "text",
           digits = 3, align = TRUE)
 ```
 
-#### E. Choosing the Best Model to Use
+### 3. to add sustainable policy insights regarding the effects of extensive economic activities and quality of institutional policies on the state of forest among ASEAN countries.
+
+## Supplemental: Choosing the Best Model to Use and Post Estimation Analysis
 
 ```{r}
 # 1. Breusch-Pagan Lagrange Multiplier test (Testing: Pooled OLS vs. Random Effects)
