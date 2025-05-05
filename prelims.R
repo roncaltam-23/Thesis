@@ -6,7 +6,7 @@ thesis <- na.omit(thesis)
 
 # Load necessary libraries
 library(stargazer)
-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #Drop Variables
 thesis <- thesis[, !(names(thesis) %in% c("GDPpc2","PopD","Trade", "AgriLU", "RegQ", "RLaw"))]
 
@@ -20,7 +20,36 @@ stargazer(
   out.header = FALSE,   # No extra header
   initial.zero = TRUE   # Show leading 0 before decimal
 )
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Load necessary libraries
+library(stargazer)
+library(dplyr)
 
+# Drop unwanted variables
+thesis <- thesis[, !(names(thesis) %in% c("GDPpc2", "PopD", "Trade", "AgriLU", "RegQ", "RLaw"))]
+
+# Get list of unique countries
+countries <- unique(thesis$Country)
+
+# Loop through each country and print descriptive statistics
+for (country in countries) {
+  cat("\n=====================================================\n")
+  cat(paste("Descriptive Statistics for", country, "\n"))
+  cat("=====================================================\n")
+  
+  country_data <- thesis %>% filter(Country == country) %>%
+    select(-Country, -Year)
+  
+  stargazer(
+    country_data,
+    type = "text",
+    title = paste("Descriptive Statistics of Key Variables -", country),
+    digits = 3,
+    summary.stat = c("mean", "sd", "min", "median", "max"),
+    out.header = FALSE,
+    initial.zero = TRUE
+  )
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #converting the data into a panel dataset
   
@@ -54,16 +83,25 @@ ggplot(log, aes(x = Year, y = log_RDef)) +
     panel.grid = element_blank(),
     legend.position = "none"
   )
-  ggtitle("Rate of Deforestation Over Time by Country") +
-  xlab("Year") +
-  ylab("Rate of Deforestation")
+  
+ggplot(log, aes(x = Year, y = FDI)) +
+  geom_hline(yintercept = 0, lty = "dashed") + 
+  geom_line() +
+  facet_wrap(~ Country, scales = "free_x") +
+  scale_x_continuous(breaks = seq(2008,2020,4)) +
+  theme_foundation() + 
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "none"
+  )
 
 #GDP per capita
 ggplot(log, aes(x = Year, y = log_GDPpc, color = Country)) +
   geom_line() +
   facet_wrap(~ Country, scales = "free_y") +
   scale_x_continuous(breaks = c(2010, 2015, 2020)) +
-  theme_minimal() +
+  theme_minimal() 
++
   ggtitle("GDP per capita over time by Country") +
   xlab("Year") +
   ylab("GDP per capita")

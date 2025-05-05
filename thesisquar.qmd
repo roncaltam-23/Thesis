@@ -92,6 +92,7 @@ stargazer(paneldata, type = "text", title = "Descriptive Statistics of Panel Dat
 #exploratory descriptive analysis
 library(dplyr)
 library(ggplot2)
+library(ggthemes)
 
 #logging GDPpc and RDef
 log <- thesis %>% mutate(log_RDef = RDef, log_GDPpc = log(GDPpc))
@@ -101,84 +102,96 @@ log <- thesis %>% mutate(log_RDef = RDef, log_GDPpc = log(GDPpc))
 
 ```{r}
 #Rate of Deforestation
-ggplot(log, aes(x = Year, y = log_RDef, color = Country)) +
+ggplot(log, aes(x = Year, y = log_RDef)) +
+  geom_hline(yintercept = 0, lty = "dashed") + 
   geom_line() +
-  facet_wrap(~ Country, scales = "free_y") +
-  scale_x_continuous(breaks = c(2010, 2015, 2020)) +
-  theme_minimal() +
-  ggtitle("Rate of Deforestation Over Time by Country") +
-  xlab("Year") +
-  ylab("Rate of Deforestation")
+  facet_wrap(~ Country, scales = "free_x") +
+  scale_x_continuous(breaks = seq(2008,2020,4)) +
+  theme_foundation() + 
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "none"
+  )
 ```
 
 **Rate of Deforestation** *(%)*. Indonesia started with a lower deforestation rate but experienced an immediate surge in 2011 while maintaining a stable pattern up until 2015 before it declined heavily the following year, peaked again in 2017 before meeting a lower stable pattern in the late 2017 onwards. The fluctuations shows that Indonesia had inconsistencies containing the decline of forests and regulating policies to combat the extractions. Malaysia has experienced a sharp decline of deforestation rate starting from year 2011, maintaining a stable pattern until 2015 before the nation experienced a sharp increase in 2016 and controlling to a lower rate the following years. The stable pattern from 2011-2015 indicates that the nation has shown a temporary yet potential mitigation of forest extraction or better land-use practices. Philippines has evidently showed a steep drop of deforestation rates in 2010 and maintained a lower deforestation rate since then, indicating that the Philippines has been practicing environmental conservation and forest-related policies. Thailand presents a moderately increasing pattern of deforestation rates from 2008-2020, potentially indicating that while the rate is still below 1%, the nation should regulate policies to control the slowly increasing extraction of forest products in Thailand. Lastly, Vietnam is experiencing a negatively fluctuating trends of deforestation rates that even hit up to -2% in 2015, which may indicate that the nation has long been in the stages of reforesting the extracted lands and controlling the forests removal.
 
 ```{r}
 #GDP per capita
-ggplot(log, aes(x = Year, y = log_GDPpc, color = Country)) +
+ggplot(log, aes(x = Year, y = GDPpc)) +
+  geom_hline(yintercept = 0, lty = "dashed") + 
   geom_line() +
-  facet_wrap(~ Country, scales = "free_y") +
-  scale_x_continuous(breaks = c(2010, 2015, 2020)) +
-  theme_minimal() +
-  ggtitle("GDP per capita over time by Country") +
-  xlab("Year") +
-  ylab("GDP per capita")
+  facet_wrap(~ Country, scales = "free_x") +
+  scale_x_continuous(breaks = seq(2008,2020,4)) +
+  theme_foundation() + 
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "none"
+  )
 ```
 
 **GDP per Capita** *(thousand USD)*. As evident in the graph, all ASEAN nations included in the study showed an upward trend in GDP per capita from 2008-2020 though possessed different economic wealth ranges. Indonesia has seen to have a steady increase in GDP per capita from 8.8 USD in 2008 to a peaking 9.4 USD in 2019. Malaysia also presented a peaking trend but at a moderately higher level starting at 9.8 USD in 2008 to a consistent increase of 10.3 USD in 2019. Philippines exhibited a stable economic progress with an 8.6 USD GDP per capita in 2008 to a slightly higher 9.0 value in 2019. Thailand also showed a pronounced economic growth ranging from 9.4 USD in 2008 to a 9.9 USD GDP per capita in 2019. Finally, Vietnam has also experienced similar upward trend but in a lower range, starting at 8.50 USD to 9.25 USD in 2019. Noticeably, all countries except Vietnam experienced a downturn in GDP per capita in 2020 potentially because of the occurrence of the global pandemic that shut down international economic activities.
 
 ```{r}
 #Share of Renewable Energy
-ggplot(log, aes(x = Year, y = RENEW, color = Country)) +
+ggplot(log, aes(x = Year, y = RENEW)) +
+  geom_hline(yintercept = 0, lty = "dashed") + 
   geom_line() +
-  facet_wrap(~ Country, scales = "free_y") +
-  scale_x_continuous(breaks = c(2010, 2015, 2020)) +
-  theme_minimal() +
-  ggtitle("Share of Renewable Energy Over Time by Country") +
-  xlab("Year") +
-  ylab("Share of Renewable Energy")
+  facet_wrap(~ Country, scales = "free_x") +
+  scale_x_continuous(breaks = seq(2008,2020,4)) +
+  theme_foundation() + 
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "none"
+  )
 ```
 
 **Share of Renewable Energy** *(% of TFEC)***.** Selected ASEAN member states demonstrated varying trends of share of renewable energy over time. Indonesia has observed a significant decline in the renewable energy consumption starting at 40% in 2008 and dropping to about 20% in 2020. This indicate that the nation has been once highly reliant on renewable energy resources but then slowly shifted to the usage of nonrenewable energy resources such coal and natural gas. Conversely, Malaysia exhibited a low yet gradual dependence in renewable energy resources over time ranging at about 2% in 2008 to a steadily increasing 7% in 2020. Philippines, while presented a declining pattern, maintained the highest renewable energy share among selected ASEAN member states striking at 34% in 2008, declined momentarily at 32% in 2010, increased again at 34% in 2011 before experiencing a consistent declining trend the following years until 2019 with a 27% and seen a slight upward in 2020. Thailand showed fluctuating patterns over time recording an almost 23% renewable energy share in 2008, peaking at more than 24% in 2015, declined severely at 22% in 2016, increased again in the latter part in 2019 but then dropped again the year after. The fluctuation may be due varying shifts of regulatory incentives given to renewable energy consumption. Lastly, Vietnam exhibited a declining pattern just like that of Indonesia and Philippines. The nation recorded an almost 40% reliance on renewable energy consumption in 2008 dropping at 20% in 2020. Similarly, this can be attributed to the nation’s high reliance on nonrenewable energy resources like fossil fuels.
 
 ```{r}
 #Foreign Direct Investment
-ggplot(log, aes(x = Year, y = FDI, color = Country)) +
+ggplot(log, aes(x = Year, y = FDI)) +
+  geom_hline(yintercept = 0, lty = "dashed") + 
   geom_line() +
-  facet_wrap(~ Country, scales = "free_y") +
-  scale_x_continuous(breaks = c(2010, 2015, 2020)) +
-  theme_minimal() +
-  ggtitle("Foreign Direct Investment Over Time by Country") +
-  xlab("Year") +
-  ylab("FDI")
+  facet_wrap(~ Country, scales = "free_x") +
+  scale_x_continuous(breaks = seq(2008,2020,4)) +
+  theme_foundation() + 
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "none"
+  )
 ```
 
 **Foreign Direct Investment** *(% of GDP)*. All ASEAN member states involved in the study observed fluctuating FDI pattern over the period of the analysis. Indonesia recorded the highest percentage of 4% in 2015 before experiencing a steady decline and settling at almost 2% in 2020.  The trend showed that Indonesia has not been dependent on foreign investments for local industrialization. Identically, Malaysia showed a fluctuating trend over time peaking at 3% in 2011 and 2015 but then declined in 2020. Philippines showed the highest reliance on FDI among ASEAN member states showing an upward trajectory with a 5% value in 2010, peaking at more than 20% in 2015 with a moderate decline in between years, and decreasing slightly in 2020, This indicates a high foreign attractiveness on the nation’s economic affairs and enhanced regulation on trade and investments. Thailand has experienced a sharp peak in late 2000’s at 7.5% before declining to less than 2.5% the following year, peaked again at 5% in 2015 and declining again at 2.5% in 2020. Vietnam peaked at 8% in 2010 but experienced sharp decline at 2.5% in 2015 and eventually experienced fluctuations up until 2020. The fluctuations show that nations are experiencing dynamic foreign investment attractiveness due to possible political and economic restrictions.
 
 ```{r}
 #Wood Exports
-ggplot(log, aes(x = Year, y = WoodEx, color = Country)) +
-geom_line() +
-  facet_wrap(~ Country, scales = "free_y") +
-  scale_x_continuous(breaks = c(2010, 2015, 2020)) +
-  theme_minimal() +
-  ggtitle("Wood Exports Over Time by Country") +
-  xlab("Year") +
-  ylab("Wood Exports")
+ggplot(log, aes(x = Year, y = WoodEx)) +
+  geom_hline(yintercept = 0, lty = "dashed") + 
+  geom_line() +
+  facet_wrap(~ Country, scales = "free_x") +
+  scale_x_continuous(breaks = seq(2008,2020,4)) +
+  theme_foundation() + 
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "none"
+  )
 ```
 
 **Wood Exports** *(thousand USD).* Fluctuations have also been evident on the wood exports of the nations covered. Indonesia experienced high wood exports in 2010 at almost 2.4 USD but then followed sharp decline of less than 2.0 USD in 2011 before experiencing a peaking wood export in 2016 onwards with fluctuations in between. This suggests that there is a slow yet unclear demand for woods from the nation over time. Indonesia registered more than 1.7 USD in 2008 declined steadily to less than 1.5 USD in 2015 increased again at almost 1.8 USD in 2017 and recorded increasing exports since then, which may suggest that Malaysia is slowly exporting larger portions of wood products over time. Philippines has seen to have an increasing wood exports pattern over time ranging from 2.0 USD in 2008 to more than 2.4 USD in 2020 indicating an increasing exportation of wood products to international markets. Thailand also experiences inconsistent patterns over time with high wood exports on years 2010 with more than 1.8 USD but decline in the succeeding year before peaking again in 2015 with more than 1.7 USD and declining back to less than 1.6 USD in late 2019. The fluctuations may be due to shifts in forestry and trading agreements in between years. Vietnam has recorded a peak point at 2010 with more than 2.4 USD worth of wood exports followed before declining wood exports the following years and registering less than 2.0 USD in 2015 but then showed gradual increase to 2.2 USD in 2020. This suggests a declining exports of wood products from 2010 to 2015 due to enhanced local trading policies.
 
 ```{r}
 #Control of Corruption
-ggplot(log, aes(x = Year, y = CCor, color = Country)) +
+ggplot(log, aes(x = Year, y = CCor)) +
+  geom_hline(yintercept = 0, lty = "dashed") + 
   geom_line() +
-  facet_wrap(~ Country, scales = "free_y") +
-  scale_x_continuous(breaks = c(2010, 2015, 2020)) +
-  theme_minimal() +
-  ggtitle("Control of Corruption Over Time by Country") +
-  xlab("Year") +
-  ylab("Control of Corruption")
+  facet_wrap(~ Country, scales = "free_x") +
+  scale_x_continuous(breaks = seq(2008,2020,4)) +
+  theme_foundation() + 
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "none"
+  )
 ```
 
 **Control of Corruption** *(3 best, -3 worst).*The control of corruption index shows that all nation records an index below 0 which indicate a poor or low control of corruption practices over time. Indonesia experienced a steady improvement from -0.9 value in 2010 to -0.3 in 2016 before declining in the succeeding years. This indicates a slow progress in containing corruption practices over time with setbacks in the recent years. Malaysia initially experienced a -0.1 index in 2010, continuously improving until 2015 with an 0.4 index but showed a sharp decline the following years at 0.0 in 2017 before increasing gradually again and a slight decrease at the end of 2020 at 0.2 This suggests that anti-corruption efforts in Malaysia has showed initial improvements in containing corruption but has become inconsistent in the later years. Philippines’ index rose sharply in 2014 to -0.4 from a -0.8 index in 2010, but since then showed a declining trend in the following years before settling at -0.5 in 2020. The country may have experienced early anti-corruption practices but has become shaky after 2015. Thailand displayed declining yet fluctuating trend over time with improvements in years 2010 at -0.35 and -0.37 at 2014 before declining heavily at -0.55 in 2015, improved slightly at -0.45 in 2016 and ended at -0.50 in 2020. Similar to the Philippines, Thailand has also showed early anti-corruption efforts but not sustained in the remaining years. Finally, Vietnam has also exhibited a fluctuation over years with a gradual improvement from a -0.7 in 2009 to better -0.4 in 2015 declining again in 2016 and has since then showed an improving performance ending at -0.4 in 2020 which may indicate that the country is in a long-term effort in mitigating corruption practices.
